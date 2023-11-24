@@ -7,6 +7,14 @@ import gitImage from "../../assets/Vector/Git.svg"
 import companny from "../../assets/Vector/company.svg"
 import peoples from "../../assets/Vector/Users.svg"
 
+interface ProfileContent {
+    name: string,
+    description: string, 
+    user: string,
+    company: string,
+    followers: string
+}
+
 export function Profile() {
     return(
         <ProfileContent>
