@@ -1,7 +1,11 @@
 import { InformationField, ProfileContent } from "./style";
-import UserImg from "../../../../assets/User.jpeg"
-import { IconDescription } from "../../../../components/IconAndDescription";
+import UserImg from "../../assets/User.jpeg"
+import { IconDescription } from "../IconAndDescription";
 import { ArrowSquareOut } from "phosphor-react";
+
+import gitImage from "../../assets/Vector/Git.svg"
+import companny from "../../assets/Vector/company.svg"
+import peoples from "../../assets/Vector/Users.svg"
 
 export function Profile() {
     return(
@@ -17,9 +21,10 @@ export function Profile() {
                 <p>Tristique volutpat pulvinar vel massa, pellentesque egestas. Eu viverra massa quam dignissim aenean malesuada suscipit. Nunc, volutpat pulvinar vel mass.</p>
 
                 <footer>
-                     <IconDescription/>
-                     <IconDescription/>
-                     <IconDescription/>
+                     <IconDescription imgUrl={gitImage} content="Rogerio-17"/>
+                     <IconDescription imgUrl={companny} content="Brisanet Telecomunicações"/>
+                     <IconDescription imgUrl={peoples} content={`11 seguidores`}/>
+
                 </footer>
             </InformationField>
         </ProfileContent>

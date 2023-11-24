@@ -5,6 +5,7 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
 
     ::-webkit-scrollbar {
       width: 0.45rem;
@@ -24,6 +25,7 @@ export const GlobalStyles = createGlobalStyle`
     background: ${({ theme }) => theme.colors["base-background"]};
     color: ${({ theme }) => theme.colors["base-text"]};
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   body, input, textarea, button {

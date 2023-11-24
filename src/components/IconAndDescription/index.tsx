@@ -1,12 +1,15 @@
-
-import gitImage from "../../assets/Vector/Vector.svg"
 import { IconDescriptionProps } from "./style"
 
-export function IconDescription(){
+interface IconDescriptionProps {
+    imgUrl: string,
+    content: string
+}
+
+export function IconDescription({imgUrl, content}:IconDescriptionProps){
     return(
         <IconDescriptionProps>
-            <img src={gitImage} alt="" />
-            <span>Rogerio-17</span>
+            <img src={imgUrl} alt="" />
+            <span>{content}</span>
         </IconDescriptionProps>
     )
 }
