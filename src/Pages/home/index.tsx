@@ -5,8 +5,18 @@ import { Search } from "./components/Search";
 import { HomeContainer, PostsContainer } from "./style";
 import axios from "axios";
 
+export interface ApiGithubFormated {
+  name?: string,
+  bio?: string,
+  login?: string,
+  company?: string,
+  followers?: number,
+  urlImage?: string,
+} 
+
+
 export function Home() {
-  const [personalInformation, setPersonalInformation] = useState({});
+  const [personalInformation, setPersonalInformation] = useState<ApiGithubFormated>();
 
   const apiUrl = "https://api.github.com";
   const username = "Rogerio-17";
@@ -14,15 +24,29 @@ export function Home() {
 
   useEffect(() => {
     axios.get(`${apiUrl}${endpoint}`).then((response) => {
-      setPersonalInformation(response.data);
+      const informations: ApiGithubFormated = {
+        name: response.data.name,
+        bio: response.data.bio,
+        login: response.data.login,
+        company: response.data.company,
+        followers: response.data.followers,
+        urlImage: response.data.avatar_url
+      }
+
+      setPersonalInformation(informations)
     });
   }, []);
 
-  console.log(personalInformation);
-
   return (
     <HomeContainer>
-      <Profile />
+      <Profile 
+      name={personalInformation?.name}
+      bio={personalInformation?.bio}
+      company={personalInformation?.company}
+      followers={personalInformation?.followers}
+      login={personalInformation?.login}
+      urlImage={personalInformation?.urlImage}
+      />
 
       <Search />
 

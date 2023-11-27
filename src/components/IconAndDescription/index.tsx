@@ -2,7 +2,7 @@ import { IconDescriptionProps } from "./style"
 
 interface IconDescriptionProps {
     imgUrl: string,
-    content: string
+    content?: string
 }
 
 export function IconDescription({imgUrl, content}:IconDescriptionProps){
