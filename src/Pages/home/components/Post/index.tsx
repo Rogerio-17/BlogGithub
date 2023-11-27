@@ -1,16 +1,23 @@
+import { IPost } from "../..";
+import { relativeDateFormatter } from "../../../../utils/formateDateMoment";
 import { PostContainer } from "./style";
 
-export function Post() {
+interface PostProps {
+    post: IPost
+}
+
+export function Post({post}: PostProps) {
+    const dateDistance = relativeDateFormatter(post.created_at)
+
     return(
         <PostContainer>
             <div>
-              <h2>JavaScript data types and data structures</h2>
-              <span>Há 1 dia</span>
+              <h2>{post.title}</h2>
+              <span>{dateDistance}</span>
             </div>
 
             <p>
-            Programming languages all have built-in data structures, but these often differ 
-            from one language to another. This article attempts to list the built-in data structures available in 
+                {post.body}
             </p>
         </PostContainer>
     )

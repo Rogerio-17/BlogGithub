@@ -1,60 +1,57 @@
-import { useEffect, useState } from "react";
-import { Profile } from "../../components/Profile";
+import { Profile } from "./components/Profile"; 
 import { Post } from "./components/Post";
 import { Search } from "./components/Search";
 import { HomeContainer, PostsContainer } from "./style";
-import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { api } from "../../lib/axios";
 
-export interface ApiGithubFormated {
-  name?: string,
-  bio?: string,
-  login?: string,
-  company?: string,
-  followers?: number,
-  urlImage?: string,
-} 
+const userName = import.meta.env.VITE_GITHUB_USERNAME
+const repoName = import.meta.env.VITE_GITHUB_REPONAME
 
+export interface IPost {
+  title: string,
+  body: string,
+  created_at: string,
+  number: number,
+  html_url: string,
+  coments: number;
+  user: {
+    login: string;
+  }
+}
 
 export function Home() {
-  const [personalInformation, setPersonalInformation] = useState<ApiGithubFormated>();
+  const [posts, setPosts] = useState<IPost[]>([]);
+  const qunatityPosts = posts.length
 
-  const apiUrl = "https://api.github.com";
-  const username = "Rogerio-17";
-  const endpoint = `/users/${username}`;
+   const getPosts = useCallback( async(query: string = '') => {
+    try {
+      const response = await api.get(`/search/issues?q=${query}%20repo:${userName}/${repoName}`)
+      setPosts(response.data.items)
+    } finally{
+
+    }
+  }, [posts])
+
 
   useEffect(() => {
-    axios.get(`${apiUrl}${endpoint}`).then((response) => {
-      const informations: ApiGithubFormated = {
-        name: response.data.name,
-        bio: response.data.bio,
-        login: response.data.login,
-        company: response.data.company,
-        followers: response.data.followers,
-        urlImage: response.data.avatar_url
-      }
-
-      setPersonalInformation(informations)
-    });
-  }, []);
+    getPosts()
+  }, [])
 
   return (
     <HomeContainer>
-      <Profile 
-      name={personalInformation?.name}
-      bio={personalInformation?.bio}
-      company={personalInformation?.company}
-      followers={personalInformation?.followers}
-      login={personalInformation?.login}
-      urlImage={personalInformation?.urlImage}
-      />
+      <Profile />
 
-      <Search />
+      <Search qunatityPosts={qunatityPosts} getPosts={getPosts}/>
+
+      {posts.length === 0 && <p>Nenhum post disponível</p>}
 
       <PostsContainer>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {
+          posts.map((post) => (
+            <Post key={post.number} post={post}/>
+          ))
+        }
       </PostsContainer>
     </HomeContainer>
   );

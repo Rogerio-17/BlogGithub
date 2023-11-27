@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SeachContent =  styled.div`
+export const SeachContent =  styled.form`
 margin-top: 4.5rem;
 margin-bottom: 2.5rem;
 
