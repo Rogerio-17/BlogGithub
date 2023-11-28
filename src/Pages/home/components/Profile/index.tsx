@@ -5,60 +5,70 @@ import { ArrowSquareOut, Target } from "phosphor-react";
 import gitImage from "../../../../assets/Vector/Git.svg"
 import companny from "../../../../assets/Vector/company.svg"
 import peoples from "../../../../assets/Vector/Users.svg"
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import { api } from "../../../../lib/axios";
+import { Spinner } from "../../../../components/Spinner";
 
 export interface ApiGithubFormated {
-    name?: string,
-    bio?: string,
-    login?: string,
-    company?: string,
-    followers?: number,
-    urlImage?: string,
-    gitHub?: string,
+    name: string,
+    bio: string,
+    login: string,
+    company: string,
+    followers: number,
+    avatar_url: string,
+    gitHub: string,
   } 
+
+const userName = import.meta.env.VITE_GITHUB_USERNAME
 
 
 export function Profile() {
-    const [personalInformation, setPersonalInformation] = useState<ApiGithubFormated>();
-    const apiUrl = "https://api.github.com";
-    const username = "Rogerio-17";
-    const endpoint = `/users/${username}`;
-  
-    useEffect(() => {
-      axios.get(`${apiUrl}${endpoint}`).then((response) => {
-        const informations: ApiGithubFormated = {
-          name: response.data.name,
-          bio: response.data.bio,
-          login: response.data.login,
-          company: response.data.company,
-          followers: response.data.followers,
-          urlImage: response.data.avatar_url,
-          gitHub: response.data.html_url,
-        }
-        setPersonalInformation(informations)
-      });
-    }, []);
+
+  const [personalInformation, setPersonalInformation] = useState<ApiGithubFormated>();
+  const [isLoading, setIsLoading] = useState(true)
+
+   const getInformationGithub = useCallback( async() => {
+    try {
+      setIsLoading(true)
+      const response = await api.get(`/users/${userName}`)
+      setPersonalInformation(response.data)      
+    } finally{
+      setIsLoading(false)
+    }
+    
+  }, [personalInformation])
+
+  useEffect(() => {
+    getInformationGithub()
+  }, [])
+
+  console.log(personalInformation)
 
     return(
         <ProfileContent>
-            <img src={personalInformation?.urlImage} alt="" />
+          {
+            isLoading ? <Spinner></Spinner> : (
+              <>
+               <img src={personalInformation?.avatar_url} alt="" />
 
-            <InformationField>
-                <div>
+                <InformationField>
+                 <div>
                   <h2>{personalInformation?.name}</h2>
                   <a href={personalInformation?.gitHub} target="_blank">Github <ArrowSquareOut size={18}/> </a>
-                </div>
+                 </div>
 
-                <p>{personalInformation?.bio}</p>
+                  <p>{personalInformation?.bio}</p>
 
-                <footer>
-                     <IconDescription imgUrl={gitImage} content={personalInformation?.login}/>
-                     <IconDescription imgUrl={companny} content={personalInformation?.company}/>
-                     <IconDescription imgUrl={peoples} content={`${personalInformation?.followers} seguidores`}/>
+                  <footer>
+                   <IconDescription imgUrl={gitImage} content={personalInformation?.login}/>
+                   <IconDescription imgUrl={companny} content={personalInformation?.company}/>
+                   <IconDescription imgUrl={peoples} content={`${personalInformation?.followers} seguidores`}/>
 
-                </footer>
-            </InformationField>
+                  </footer>
+                </InformationField>
+              </>
+            )
+          }
         </ProfileContent>
     )
 }

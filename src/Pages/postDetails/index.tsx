@@ -4,6 +4,7 @@ import { PostInfo } from "./postInfo";
 import { DescriptionContent, PostDetailsContainer } from "./style";
 import { api } from "../../lib/axios";
 import { useParams } from "react-router-dom";
+import { Spinner } from "../../components/Spinner";
 
 const userName = import.meta.env.VITE_GITHUB_USERNAME
 const repoName = import.meta.env.VITE_GITHUB_REPONAME
@@ -45,12 +46,17 @@ export function PostDetails() {
 
   return (
     <PostDetailsContainer>
-      {!isLoading && <PostInfo PostInfoPros={postSelected} login={userName}/>}
+      {
+        isLoading ? <Spinner></Spinner> : (
+          <>
+              <PostInfo PostInfoPros={postSelected} login={userName}/>
 
-      <DescriptionContent>
-        {!isLoading && <Markedown markdown={postSelected.body}/>}
-      </DescriptionContent>
-    
+            <DescriptionContent>
+              <Markedown markdown={postSelected.body}/>
+            </DescriptionContent>
+          </>
+        )
+      }
     </PostDetailsContainer>
   );
 }

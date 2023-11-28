@@ -23,4 +23,8 @@ grid-template-columns: repeat(2, 1fr);
 row-gap: 2rem;
 column-gap: 2rem;
 
+.spinner {
+  grid-column: span 2;
+}
+
 `

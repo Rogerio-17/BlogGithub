@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ProfileContent = styled.div`
 position: relative;
+height: 13.25rem;
 background: ${({theme}) => theme.colors["base-profile"]};
 margin-top: -6rem;
 padding: 1rem 2.25rem;

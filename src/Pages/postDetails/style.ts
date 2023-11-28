@@ -4,6 +4,10 @@ export const PostDetailsContainer = styled.main`
 max-width: 920px;
 margin: 0 auto;
 
+.spinner {
+    margin-top: 10rem;
+}
+
 `
 
 

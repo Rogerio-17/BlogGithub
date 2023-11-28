@@ -4,6 +4,7 @@ import { Search } from "./components/Search";
 import { HomeContainer, PostsContainer } from "./style";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../../lib/axios";
+import { Spinner } from "../../components/Spinner";
 
 const userName = import.meta.env.VITE_GITHUB_USERNAME
 const repoName = import.meta.env.VITE_GITHUB_REPONAME
@@ -22,14 +23,17 @@ export interface IPost {
 
 export function Home() {
   const [posts, setPosts] = useState<IPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true)
   const qunatityPosts = posts.length
+
 
    const getPosts = useCallback( async(query: string = '') => {
     try {
+      setIsLoading(true)
       const response = await api.get(`/search/issues?q=${query}%20repo:${userName}/${repoName}`)
       setPosts(response.data.items)
     } finally{
-
+      setIsLoading(false)
     }
   }, [posts])
 
@@ -44,13 +48,15 @@ export function Home() {
 
       <Search qunatityPosts={qunatityPosts} getPosts={getPosts}/>
 
-      {posts.length === 0 && <p>Nenhum post disponível</p>}
+      {posts.length === 0 && !isLoading && <p>Nenhum post disponível</p>}
 
       <PostsContainer>
         {
-          posts.map((post) => (
-            <Post key={post.number} post={post}/>
-          ))
+          isLoading ? <Spinner></Spinner> : (
+            posts.map((post) => (
+              <Post key={post.number} post={post}/>
+            ))
+          )
         }
       </PostsContainer>
     </HomeContainer>
