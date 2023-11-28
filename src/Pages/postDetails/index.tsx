@@ -1,41 +1,54 @@
+import { useCallback, useEffect, useState } from "react";
 import { Markedown } from "./Markdown";
 import { PostInfo } from "./postInfo";
 import { DescriptionContent, PostDetailsContainer } from "./style";
+import { api } from "../../lib/axios";
+import { useParams } from "react-router-dom";
+
+const userName = import.meta.env.VITE_GITHUB_USERNAME
+const repoName = import.meta.env.VITE_GITHUB_REPONAME
+
+interface PostSelectedApi {
+    title: string;
+    created_at: string;
+    comments: number;
+    body: string;
+    html_url: string;
+}
+
+export interface Post {
+  post: PostSelectedApi
+}
 
 
 export function PostDetails() {
-  const InformationGit = {
-    title: "JavaScript data types and data structures",
-    name: "Rogerio-17",
-    date: "2",
-    comment: 5,
-  };
+
+  const [postSelected, setPostSelected] = useState({} as PostSelectedApi);
+  const [isLoading, setIsLoading] = useState(true)
+  const { id } = useParams()
+
+   const getPost = useCallback( async() => {
+    try {
+      setIsLoading(true)
+      const response = await api.get(`/repos/${userName}/${repoName}/issues/${id}`)
+      setPostSelected(response.data)      
+    } finally{
+      setIsLoading(false)
+    }
+    
+  }, [postSelected])
+
+  useEffect(() => {
+    getPost()
+  }, [])
 
 
   return (
     <PostDetailsContainer>
-      <PostInfo PostInfoPros={InformationGit} />
+      {!isLoading && <PostInfo PostInfoPros={postSelected} login={userName}/>}
 
       <DescriptionContent>
-        <p>
-          Programming languages all have built-in data structures, but these
-          often differ from one language to another. This article attempts to
-          list the built-in data structures available in JavaScript and what
-          properties they have. These can be used to build other data
-          structures. Wherever possible, comparisons with other languages are
-          drawn.
-        </p>
-
-        <a>Dynamic typing</a>
-
-        <p>
-          JavaScript is a loosely typed and dynamic language. Variables in
-          JavaScript are not directly associated with any particular value type,
-          and any variable can be assigned (and re-assigned) values of all
-          types:
-        </p>
-
-        <Markedown></Markedown>
+        {!isLoading && <Markedown markdown={postSelected.body}/>}
       </DescriptionContent>
     
     </PostDetailsContainer>

@@ -10,7 +10,7 @@ export function Post({post}: PostProps) {
     const dateDistance = relativeDateFormatter(post.created_at)
 
     return(
-        <PostContainer>
+        <PostContainer to={`postdetails/${post.number}`}>
             <div>
               <h2>{post.title}</h2>
               <span>{dateDistance}</span>

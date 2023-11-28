@@ -4,18 +4,15 @@ import { useEffect } from "react";
 import { marked } from "marked";
 import { MarkedownContainer } from "./style";
 
-export function Markedown() {
+interface MarkdownProps {
+  markdown: string
+}
+
+export function Markedown({markdown}: MarkdownProps) {
+  console.log(markdown)
   useEffect(() => {
     hljs.highlightAll();
   }, []);
-
-  const markdown = `
-  \`\`\`typescript
-  let foo = 42;   // foo is now a number
-  foo = ‘bar’;    // foo is now a string
-  foo = true;     // foo is now a boolean
-  \`\`\`
-`;
 
   return (
     <MarkedownContainer className="App">

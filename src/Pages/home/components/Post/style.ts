@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const PostContainer = styled.a`
+export const PostContainer = styled(Link)`
 width: 27.75rem;
 height: 15.25rem;
 padding: 2rem;

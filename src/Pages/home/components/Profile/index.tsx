@@ -1,6 +1,6 @@
 import { InformationField, ProfileContent } from "./style";
 import { IconDescription } from "../../../../components/IconAndDescription";
-import { ArrowSquareOut } from "phosphor-react";
+import { ArrowSquareOut, Target } from "phosphor-react";
 
 import gitImage from "../../../../assets/Vector/Git.svg"
 import companny from "../../../../assets/Vector/company.svg"
@@ -15,6 +15,7 @@ export interface ApiGithubFormated {
     company?: string,
     followers?: number,
     urlImage?: string,
+    gitHub?: string,
   } 
 
 
@@ -32,9 +33,9 @@ export function Profile() {
           login: response.data.login,
           company: response.data.company,
           followers: response.data.followers,
-          urlImage: response.data.avatar_url
+          urlImage: response.data.avatar_url,
+          gitHub: response.data.html_url,
         }
-  
         setPersonalInformation(informations)
       });
     }, []);
@@ -46,7 +47,7 @@ export function Profile() {
             <InformationField>
                 <div>
                   <h2>{personalInformation?.name}</h2>
-                  <a href="">Github <ArrowSquareOut size={18}/> </a>
+                  <a href={personalInformation?.gitHub} target="_blank">Github <ArrowSquareOut size={18}/> </a>
                 </div>
 
                 <p>{personalInformation?.bio}</p>
