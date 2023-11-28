@@ -16,7 +16,6 @@ export interface ApiGithubFormated {
     company: string,
     followers: number,
     avatar_url: string,
-    gitHub: string,
   } 
 
 const userName = import.meta.env.VITE_GITHUB_USERNAME
@@ -54,7 +53,7 @@ export function Profile() {
                 <InformationField>
                  <div>
                   <h2>{personalInformation?.name}</h2>
-                  <a href={personalInformation?.gitHub} target="_blank">Github <ArrowSquareOut size={18}/> </a>
+                  <a href={`https://github.com/${personalInformation?.login}`} target="_blank">Github <ArrowSquareOut size={18}/> </a>
                  </div>
 
                   <p>{personalInformation?.bio}</p>
